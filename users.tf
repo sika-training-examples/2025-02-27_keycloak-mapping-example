@@ -1,13 +1,13 @@
 locals {
   users = {
     dela = [
-      "Dela", "Dela",
+      "Dela", "Dela", "IT",
       [
         keycloak_group.realm1-admins.id,
       ]
     ]
     nela = [
-      "Nela", "Nela",
+      "Nela", "Nela", "HR",
       [
         keycloak_group.realm1-viewers.id,
       ]
@@ -33,6 +33,10 @@ resource "keycloak_user" "users1" {
   first_name     = each.value[0]
   last_name      = each.value[1]
 
+  attributes = {
+    department = each.value[2]
+  }
+
   initial_password {
     value     = "a"
     temporary = false
@@ -45,5 +49,5 @@ resource "keycloak_user_groups" "users" {
   realm_id = keycloak_realm.realm1.id
   user_id  = keycloak_user.users1[each.key].id
 
-  group_ids = each.value[2]
+  group_ids = each.value[3]
 }

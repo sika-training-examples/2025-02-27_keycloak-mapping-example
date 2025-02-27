@@ -16,6 +16,61 @@ resource "keycloak_realm" "realm2" {
   }
 }
 
+resource "keycloak_realm_user_profile" "realm2" {
+  realm_id = keycloak_realm.realm2.id
+
+
+  attribute {
+    name = "username"
+
+    permissions {
+      edit = ["admin"]
+      view = ["user"]
+    }
+  }
+
+  attribute {
+    name = "email"
+
+    permissions {
+      edit = ["admin"]
+      view = ["user"]
+    }
+
+    validator {
+      name = "email"
+    }
+  }
+
+  attribute {
+    name = "firstName"
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+  }
+
+  attribute {
+    name = "lastName"
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+  }
+
+  attribute {
+    name         = "department"
+    display_name = "Department"
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+  }
+}
+
 resource "keycloak_oidc_identity_provider" "realm2" {
   realm             = keycloak_realm.realm2.id
   alias             = keycloak_realm.realm1.realm

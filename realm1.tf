@@ -15,3 +15,57 @@ resource "keycloak_realm" "realm1" {
     from = "keycloak@kc0.com"
   }
 }
+
+resource "keycloak_realm_user_profile" "realm1" {
+  realm_id = keycloak_realm.realm1.id
+
+  attribute {
+    name = "username"
+
+    permissions {
+      edit = ["admin"]
+      view = ["user"]
+    }
+  }
+
+  attribute {
+    name = "email"
+
+    permissions {
+      edit = ["admin"]
+      view = ["user"]
+    }
+
+    validator {
+      name = "email"
+    }
+  }
+
+  attribute {
+    name = "firstName"
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+  }
+
+  attribute {
+    name = "lastName"
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+  }
+
+  attribute {
+    name         = "department"
+    display_name = "Department"
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+  }
+}
