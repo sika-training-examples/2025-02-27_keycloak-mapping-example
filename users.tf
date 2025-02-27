@@ -8,6 +8,8 @@ locals {
       [
         keycloak_role.realm1-admin.id,
         keycloak_role.realm1-user.id,
+        keycloak_role.realm1-editor.id,
+        keycloak_role.realm1-viewer.id,
       ]
     ]
     nela = [
@@ -17,6 +19,7 @@ locals {
       ],
       [
         keycloak_role.realm1-user.id,
+        keycloak_role.realm1-viewer.id,
       ]
     ]
   }
