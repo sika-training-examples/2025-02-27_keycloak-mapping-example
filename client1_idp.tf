@@ -10,3 +10,14 @@ resource "keycloak_openid_client" "realm1_idp" {
   valid_post_logout_redirect_uris = ["*"]
   web_origins                     = ["*"]
 }
+
+resource "keycloak_openid_client_default_scopes" "realm1_idp" {
+  realm_id  = keycloak_realm.realm1.id
+  client_id = keycloak_openid_client.realm1_idp.id
+
+  default_scopes = [
+    "profile",
+    "email",
+    keycloak_openid_client_scope.realm1_department.name,
+  ]
+}
