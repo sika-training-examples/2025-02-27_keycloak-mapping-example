@@ -120,6 +120,34 @@ resource "keycloak_generic_protocol_mapper" "realm2_department" {
   }
 }
 
+resource "keycloak_attribute_to_role_identity_provider_mapper" "realm2-role-admin" {
+  realm                   = keycloak_realm.realm2.id
+  name                    = "admin-role-attribute"
+  identity_provider_alias = keycloak_oidc_identity_provider.realm2.alias
+  role                    = keycloak_role.realm2-admin.name
+  claim_name              = "roles"
+  claim_value             = keycloak_role.realm1-admin.name
+
+  # extra_config with syncMode is required in Keycloak 10+
+  extra_config = {
+    syncMode = "FORCE"
+  }
+}
+
+resource "keycloak_attribute_to_role_identity_provider_mapper" "realm2-role-user" {
+  realm                   = keycloak_realm.realm2.id
+  name                    = "user-role-attribute"
+  identity_provider_alias = keycloak_oidc_identity_provider.realm2.alias
+  role                    = keycloak_role.realm2-user.name
+  claim_name              = "roles"
+  claim_value             = keycloak_role.realm1-user.name
+
+  # extra_config with syncMode is required in Keycloak 10+
+  extra_config = {
+    syncMode = "FORCE"
+  }
+}
+
 resource "keycloak_openid_client_scope" "realm2_groups" {
   realm_id               = keycloak_realm.realm2.id
   name                   = "groups"

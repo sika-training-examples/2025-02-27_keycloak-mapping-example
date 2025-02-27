@@ -11,11 +11,20 @@ resource "keycloak_openid_client" "realm1_default" {
   web_origins                     = ["*"]
 }
 
+resource "keycloak_openid_client_default_scopes" "realm1_default" {
+  realm_id  = keycloak_realm.realm1.id
+  client_id = keycloak_openid_client.realm1_default.id
+
+  default_scopes = []
+}
+
 resource "keycloak_openid_client_optional_scopes" "realm1_default" {
   realm_id  = keycloak_realm.realm1.id
   client_id = keycloak_openid_client.realm1_default.id
 
   optional_scopes = [
+    "email",
+    "profile",
     keycloak_openid_client_scope.realm1_groups.name,
     keycloak_openid_client_scope.realm1_department.name,
   ]

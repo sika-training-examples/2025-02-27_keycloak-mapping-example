@@ -4,12 +4,19 @@ locals {
       "Dela", "Dela", "IT",
       [
         keycloak_group.realm1-admins.id,
+      ],
+      [
+        keycloak_role.realm1-admin.id,
+        keycloak_role.realm1-user.id,
       ]
     ]
     nela = [
       "Nela", "Nela", "HR",
       [
         keycloak_group.realm1-viewers.id,
+      ],
+      [
+        keycloak_role.realm1-user.id,
       ]
     ]
   }
@@ -50,4 +57,13 @@ resource "keycloak_user_groups" "users" {
   user_id  = keycloak_user.users1[each.key].id
 
   group_ids = each.value[3]
+}
+
+resource "keycloak_user_roles" "users" {
+  for_each = local.users
+
+  realm_id = keycloak_realm.realm1.id
+  user_id  = keycloak_user.users1[each.key].id
+
+  role_ids = each.value[4]
 }
