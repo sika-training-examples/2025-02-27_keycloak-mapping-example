@@ -16,6 +16,7 @@ resource "keycloak_openid_client_optional_scopes" "realm1_default" {
   client_id = keycloak_openid_client.realm1_default.id
 
   optional_scopes = [
+    keycloak_openid_client_scope.realm1_groups.name,
     keycloak_openid_client_scope.realm1_department.name,
   ]
 }

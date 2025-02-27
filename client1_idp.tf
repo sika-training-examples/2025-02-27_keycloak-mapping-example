@@ -18,6 +18,7 @@ resource "keycloak_openid_client_default_scopes" "realm1_idp" {
   default_scopes = [
     "profile",
     "email",
+    keycloak_openid_client_scope.realm1_groups.name,
     keycloak_openid_client_scope.realm1_department.name,
   ]
 }
