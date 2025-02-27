@@ -83,3 +83,27 @@ resource "keycloak_oidc_identity_provider" "realm2" {
     "clientAuthMethod" = "client_secret_post"
   }
 }
+
+resource "keycloak_openid_client_scope" "realm2_department" {
+  realm_id               = keycloak_realm.realm2.id
+  name                   = "department"
+  include_in_token_scope = true
+}
+
+resource "keycloak_generic_protocol_mapper" "realm2_department" {
+  realm_id        = keycloak_realm.realm2.id
+  client_scope_id = keycloak_openid_client_scope.realm2_department.id
+  name            = "department-attribute-mapper"
+  protocol        = "openid-connect"
+  protocol_mapper = "oidc-usermodel-attribute-mapper"
+
+  config = {
+    "introspection.token.claim" = "true"
+    "claim.name"                = "department"
+    "jsonType.label"            = "String"
+    "user.attribute"            = "department"
+    "id.token.claim"            = "true"
+    "access.token.claim"        = "true"
+    "userinfo.token.claim"      = "true"
+  }
+}

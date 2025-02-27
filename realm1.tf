@@ -69,3 +69,27 @@ resource "keycloak_realm_user_profile" "realm1" {
     }
   }
 }
+
+resource "keycloak_openid_client_scope" "realm1_department" {
+  realm_id               = keycloak_realm.realm1.id
+  name                   = "department"
+  include_in_token_scope = true
+}
+
+resource "keycloak_generic_protocol_mapper" "realm1_department" {
+  realm_id        = keycloak_realm.realm1.id
+  client_scope_id = keycloak_openid_client_scope.realm1_department.id
+  name            = "department-attribute-mapper"
+  protocol        = "openid-connect"
+  protocol_mapper = "oidc-usermodel-attribute-mapper"
+
+  config = {
+    "introspection.token.claim" = "true"
+    "claim.name"                = "department"
+    "jsonType.label"            = "String"
+    "user.attribute"            = "department"
+    "id.token.claim"            = "true"
+    "access.token.claim"        = "true"
+    "userinfo.token.claim"      = "true"
+  }
+}
