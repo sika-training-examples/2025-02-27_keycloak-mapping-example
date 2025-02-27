@@ -84,6 +84,18 @@ resource "keycloak_oidc_identity_provider" "realm2" {
   }
 }
 
+resource "keycloak_attribute_importer_identity_provider_mapper" "realm2_department" {
+  realm                   = keycloak_realm.realm2.id
+  name                    = "department-attribute-importer"
+  claim_name              = "department"
+  identity_provider_alias = keycloak_oidc_identity_provider.realm2.alias
+  user_attribute          = "department"
+
+  extra_config = {
+    syncMode = "INHERIT"
+  }
+}
+
 resource "keycloak_openid_client_scope" "realm2_department" {
   realm_id               = keycloak_realm.realm2.id
   name                   = "department"
