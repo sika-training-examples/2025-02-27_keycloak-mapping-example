@@ -93,3 +93,18 @@ resource "keycloak_generic_protocol_mapper" "realm1_department" {
     "userinfo.token.claim"      = "true"
   }
 }
+
+resource "keycloak_openid_client_scope" "realm1_groups" {
+  realm_id               = keycloak_realm.realm1.id
+  name                   = "groups"
+  include_in_token_scope = true
+}
+
+resource "keycloak_openid_group_membership_protocol_mapper" "realm1_groups" {
+  realm_id        = keycloak_realm.realm1.id
+  client_scope_id = keycloak_openid_client_scope.realm1_groups.id
+
+  name       = keycloak_openid_client_scope.realm1_groups.name
+  claim_name = keycloak_openid_client_scope.realm1_groups.name
+  full_path  = false
+}
